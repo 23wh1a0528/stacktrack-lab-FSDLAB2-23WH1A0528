@@ -4,7 +4,7 @@ import QuestionComponent from '../components/question/QuestionComponent';
 function QuestionPage() {
   return (
     <div>
-      <h1>Question Page</h1>
+      <h1>Task Seacrh Application</h1>
       <QuestionComponent />
     </div>
   );
