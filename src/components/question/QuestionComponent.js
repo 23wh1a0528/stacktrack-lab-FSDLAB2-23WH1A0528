@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useSearchParams} from 'react-router-dom';
-
+import {get} from '../../api/client';
 // TODO: Import any API functions you need from '../../api/client'
 // Example: import { get, post } from '../../api/client';
 
@@ -18,15 +18,14 @@ function QuestionComponent() {
 
   useEffect(() =>{
     if(searchQuery){
-      fetch(`http://bvrithcloud.com/api/tasks?search=${searchQuery}`,{
-        method:"GET",
-        headers:{
-          "Content-Type":"application/json",
-          "x-student-id":"23WH1A0528"
-        }
+      get(`/api/tasks?search=${searchQuery}`)
+      .then(data =>{
+        console.log(data);
+
+        const result = Array.isArray(data) ? data : data.tasks || [];
+        setTasks(result);
       })
-      .then(res => res.json())
-      .then(data => setTasks(data));
+      .catch(err => console.error(err));
     }
   }, [searchQuery]);
 
@@ -50,7 +49,7 @@ function QuestionComponent() {
       <button onClick={handleSearch}>Search</button>
       {/* TODO: Render fetched data or form elements as required */}
       <div>
-        {tasks.map(tasks => (
+        {Array.isArray(tasks) && tasks.map(tasks => (
           <div key = {tasks._id}>
             <h3>{tasks.title}</h3>
             <p>{tasks.description}</p>
